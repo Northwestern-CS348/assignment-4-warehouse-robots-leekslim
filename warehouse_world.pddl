@@ -31,4 +31,28 @@
       :effect (and (started ?s) (packing-at ?s ?l) (not (unstarted ?s)) (not (available ?l)))
    )
 
+   (:action robotMove
+      :parameters (?r - robot ?ini - location ?tar - location)
+      :precondition (and (unstarted ?s) (not (complete ?s)) (ships ?s ?o) (available ?l) (packing-location ?l))
+      :effect (and (started ?s) (packing-at ?s ?l) (not (unstarted ?s)) (not (available ?l)))
+   )
+
+   (:action robotMoveWithPallette
+      :parameters (?r - robot ?ini - location ?tar - location ?p pallette)
+      :precondition (and (unstarted ?s) (not (complete ?s)) (ships ?s ?o) (available ?l) (packing-location ?l))
+      :effect (and (started ?s) (packing-at ?s ?l) (not (unstarted ?s)) (not (available ?l)))
+   )
+
+   (:action moveItemFromPalletteToShipment
+      :parameters (?si - saleitem ?p - pallette ?s - shipment ?o - order ?l - location)
+      :precondition (and (unstarted ?s) (not (complete ?s)) (ships ?s ?o) (available ?l) (packing-location ?l))
+      :effect (and (started ?s) (packing-at ?s ?l) (not (unstarted ?s)) (not (available ?l)))
+   )
+
+   (:action completeShipment
+      :parameters (?s - shipment ?o - order ?l - location)
+      :precondition (and (started ?s) (not (complete ?s)) (ships ?s ?o) (packing-at ?l))
+      :effect (and (complete ?s) (available ?l))
+   )
+
 )
