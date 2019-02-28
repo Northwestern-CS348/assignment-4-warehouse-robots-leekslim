@@ -34,24 +34,24 @@
    (:action robotMove
       :parameters (?r - robot ?ini - location ?tar - location)
       :precondition (and (at ?r ?ini) (connected ?ini ?tar) (no-robot ?tar))
-      :effect (and (at ?r ?tar) (no-robot ?ini) (not (no-robot ?tar)) (not (at ?r ?ini)) (free ?r))
+      :effect (and (at ?r ?tar) (no-robot ?ini) (not (no-robot ?tar)) (not (at ?r ?ini)))
    )
 
    (:action robotMoveWithPallette
-      :parameters (?r - robot ?ini - location ?tar - location ?p pallette)
-      :precondition (and (at ?r ?ini) (at ?p ?ini) (free ?r) (connected ?ini ?tar) (no-robot ?tar) (no-pallette ?tar))
-      :effect (and (at ?r ?tar) (no-robot ?ini) (at ?p ?tar) (has ?r ?p) (no-pallette ?ini) (not (free ?r)) (not (at ?p ?ini)) (not (no-pallette ?tar)) (not (no-robot ?tar)) (not (at ?r ?ini)))
+      :parameters (?r - robot ?ini - location ?tar - location ?p - pallette)
+      :precondition (and (at ?r ?ini) (at ?p ?ini) (connected ?ini ?tar) (no-robot ?tar) (no-pallette ?tar))
+      :effect (and (at ?r ?tar) (no-robot ?ini) (at ?p ?tar) (no-pallette ?ini) (not (at ?p ?ini)) (not (no-pallette ?tar)) (not (no-robot ?tar)) (not (at ?r ?ini)))
    )
 
    (:action moveItemFromPalletteToShipment
       :parameters (?si - saleitem ?p - pallette ?s - shipment ?o - order ?l - location)
-      :precondition (and )
-      :effect (and )
+      :precondition (and (at ?p ?l) (packing-at ?s ?l) (not (complete ?s)) (contains ?p ?si) (ships ?s ?o) (orders ?o ?si))
+      :effect (and (includes ?s ?si) (not (contains ?p ?si)))
    )
 
    (:action completeShipment
       :parameters (?s - shipment ?o - order ?l - location)
-      :precondition (and (started ?s) (not (complete ?s)) (ships ?s ?o) (packing-at ?l))
+      :precondition (and (started ?s) (not (complete ?s)) (ships ?s ?o) (packing-at ?s ?l))
       :effect (and (complete ?s) (available ?l))
    )
 
